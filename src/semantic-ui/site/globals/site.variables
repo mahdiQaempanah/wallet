@@ -1,0 +1,6 @@
+/*******************************
+     User Global Variables
+*******************************/
+
+@headerFont        : 'Vazirmatn';
+@pageFont          : 'Vazirmatn';
