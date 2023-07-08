@@ -16,7 +16,7 @@ function LoginForm() {
   let navigator = useNavigate();
   const loginButton = () => {
     // todo(connect to backend)
-    navigator("../home", { username });
+    navigator("../home", { state: { username: username } });
   };
   return (
     <>

@@ -18,7 +18,7 @@ export default function App(props) {
         <Route path="/" element={<Navigate replace to="/login" />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/home" element={<MainPage />} />
+        <Route path="/home/*" element={<MainPage />} />
       </Routes>
     </BrowserRouter>
   );

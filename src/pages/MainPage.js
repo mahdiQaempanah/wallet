@@ -11,8 +11,11 @@ import {
 import NavBar from "../components/NavBar";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./MainPage.css";
-function MainPage({ props }) {
-  console.log(props);
+import { useLocation } from "react-router-dom";
+function MainPage() {
+  const location = useLocation();
+  let username = location.state.username;
+  console.log(username);
   return (
     <>
       <NavBar />
