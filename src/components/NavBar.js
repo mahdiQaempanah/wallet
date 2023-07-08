@@ -5,10 +5,9 @@ import { Sidebar } from "semantic-ui-react";
 import { SidebarData } from "./SideBarData";
 import "./NavBar.css";
 import { IconContext } from "react-icons";
-function NavBar() {
+function NavBar({ username }) {
   const [sidebar, setSidebar] = useState(false);
   const showSidebar = () => {
-    console.log("clicked");
     setSidebar(!sidebar);
   };
 
@@ -30,7 +29,7 @@ function NavBar() {
             {SidebarData.map((item, index) => {
               return (
                 <li key={index} className={item.cName}>
-                  <Link to={item.path}>
+                  <Link to={item.path} state={{ username: username }}>
                     {item.icon}
                     <span>{item.title}</span>
                   </Link>

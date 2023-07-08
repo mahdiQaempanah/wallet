@@ -10,8 +10,7 @@ import LoginForm from "./pages/LoginForm";
 import SignUp from "./pages/SignUp";
 import MainPage from "./pages/MainPage";
 
-export default function App(props) {
-  console.log(props);
+export default function App() {
   return (
     <BrowserRouter>
       <Routes>

@@ -18,7 +18,7 @@ function MainPage() {
   console.log(username);
   return (
     <>
-      <NavBar />
+      <NavBar username={username} />
       <Routes>
         <Route path="/home" />
         <Route path="/budget" />
