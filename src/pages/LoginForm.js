@@ -5,7 +5,9 @@ import { useNavigate } from "react-router-dom";
 
 function LoginForm() {
   const navigate = useNavigate();
+  // eslint-disable-next-line no-unused-vars
   const [username, setusername] = useState("");
+  // eslint-disable-next-line no-unused-vars
   const [password, setpassword] = useState("");
   const loginRequest = (e) => {
     e.preventDefault()

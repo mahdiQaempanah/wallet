@@ -1,7 +1,3 @@
 /*******************************
          Site Overrides
 *******************************/
-
-@headerFont        : 'Vazirmatn', 'Helvetica Neue', Arial, Helvetica, sans-serif;
-@pageFont          : 'Vazirmatn', 'Helvetica Neue', Arial, Helvetica, sans-serif;
-@googleFontFamily  : 'Vazirmatn';

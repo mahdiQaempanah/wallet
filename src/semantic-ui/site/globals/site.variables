@@ -2,5 +2,8 @@
      User Global Variables
 *******************************/
 
-@headerFont        : 'Vazirmatn';
-@pageFont          : 'Vazirmatn';
+@headerFont        : 'Vazirmatn', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+@pageFont          : 'Vazirmatn', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+@googleFontFamily  : 'Vazirmatn';
+@primaryColor   : @purple;
+@secondaryColor : @grey;
