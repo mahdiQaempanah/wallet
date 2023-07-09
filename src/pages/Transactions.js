@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from '../assets/images/logo.png';
+import EnglishDigitsToFarsi from './Utils';
 // import { useEffect, useState } from "react";
 // import { Navigate } from "react-router-dom";
 import { Card, Grid, Divider, Dropdown, Menu, Container, Image, Header, Table, Button, Modal, Form, Input, Select, Placeholder, Tab, Icon, Item, Segment } from 'semantic-ui-react'
@@ -50,32 +50,6 @@ export default function Transactions() {
   const [data, setData] = React.useState(randomData)
   const [sum, setSum] = React.useState(sumData())
   const [openDelete, setOpenDelete] = React.useState(false)
-
-
-
-  function EnglishDigitsToFarsi(num) {
-    function convertor(num) {
-      let str = num.toString();
-      var e2f = {
-        '0': '۰',
-        '1': '۱',
-        '2': '۲',
-        '3': '۳',
-        '4': '۴',
-        '5': '۵',
-        '6': '۶',
-        '7': '۷',
-        '8': '۸',
-        '9': '۹'
-      };
-      return str.replace(/[0-9]/g, function (match) { return e2f[match]; });
-    }
-
-    if (num >= 0)
-      return convertor(num) + '+'
-    else
-      return convertor(-num) + '-'
-  }
 
   function RemoveTransaction(index) {
     let newData = data
