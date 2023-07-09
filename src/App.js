@@ -10,6 +10,7 @@ import LoginForm from "./pages/LoginForm";
 import SignUp from "./pages/SignUp";
 import MainPage from "./pages/MainPage";
 import ReportPage from "./pages/ReportPage";
+import BudgetPage from "./pages/Budget";
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/home/*" element={<MainPage />} />
         <Route path="/report/*" element={<ReportPage />} />
+        <Route path="/budget/*" element={<BudgetPage />} />
       </Routes>
     </BrowserRouter>
   );
