@@ -2,13 +2,13 @@ import React from 'react';
 import logo from '../assets/images/logo.png';
 // import { useEffect, useState } from "react";
 // import { Navigate } from "react-router-dom";
-import { Card, Grid, Divider, Dropdown, Menu, Container, Image, Header, Table, Button, Modal, Form, Input, Select, Placeholder, Tab, Icon, Item } from 'semantic-ui-react'
+import { Card, Grid, Divider, Dropdown, Menu, Container, Image, Header, Table, Button, Modal, Form, Input, Select, Placeholder, Tab, Icon, Item, Segment } from 'semantic-ui-react'
 
 let fullname = "ابوالفضل سلطانی"
 
 const randomData = [
   {
-    "amount": 1000,
+    "amount": -1000,
     "category": "غذا",
     "description": "خرید مواد غذایی برای مهمونی فردا که علی میزبان ماست.",
     "payee": "محمد",
@@ -49,6 +49,40 @@ export default function Transactions() {
   const [open, setOpen] = React.useState(false)
   const [data, setData] = React.useState(randomData)
   const [sum, setSum] = React.useState(sumData())
+  const [openDelete, setOpenDelete] = React.useState(false)
+
+
+
+  function EnglishDigitsToFarsi(num) {
+    function convertor(num) {
+      let str = num.toString();
+      var e2f = {
+        '0': '۰',
+        '1': '۱',
+        '2': '۲',
+        '3': '۳',
+        '4': '۴',
+        '5': '۵',
+        '6': '۶',
+        '7': '۷',
+        '8': '۸',
+        '9': '۹'
+      };
+      return str.replace(/[0-9]/g, function (match) { return e2f[match]; });
+    }
+
+    if (num >= 0)
+      return convertor(num) + '+'
+    else
+      return convertor(-num) + '-'
+  }
+
+  function RemoveTransaction(index) {
+    let newData = data
+    newData.splice(index, 1)
+    setData(newData)
+    setSum(sumData())
+  }
 
   function AddTransaction(form) {
     console.log(form.elements)
@@ -100,7 +134,7 @@ export default function Transactions() {
           </Dropdown>
         </Container>
       </Menu>
-      
+
       <Container style={{ marginTop: '7em' }} textAlign='right'>
 
         <Table color='purple' fixed singleLine selectable textAlign='right'>
@@ -122,14 +156,43 @@ export default function Transactions() {
                 <Table.Cell>{transaction.payee}</Table.Cell>
                 <Table.Cell>{transaction.category}</Table.Cell>
                 <Table.Cell>{transaction.description}</Table.Cell>
-                <Table.Cell>{transaction.amount} هزار تومان </Table.Cell>
+                <Table.Cell>
+                  {
+                    (() => {
+                      if (transaction.amount > 0)
+                        return <span style={{ color: 'green' }}>{EnglishDigitsToFarsi(transaction.amount)} هزار تومان</span>
+                      else
+                        return <span style={{ color: 'red' }}>{EnglishDigitsToFarsi(transaction.amount)} هزار تومان</span>
+                    })()
+                  }
+                </Table.Cell>
                 <Table.Cell collapsing>
-                  <Icon
-                    name='edit'
-                    onClick={() => {
-                      console.log('delete')
-                    }}
-                  />
+                  <Modal
+                    closeIcon
+                    open={openDelete}
+                    trigger={<Button icon color='purple' inverted> <Icon name='trash alternate' /> </Button>}
+                    onClose={() => setOpenDelete(false)}
+                    onOpen={() => setOpenDelete(true)}
+                  >
+                    <Modal.Content>
+                      <Segment vertical textAlign='right'>
+                        آیا مطمئنید که می‌خواهید این تراکنش را حذف کنید؟
+                      </Segment>
+                    </Modal.Content>
+                    <Modal.Actions>
+                      <Button color='red' onClick={() => setOpenDelete(false)}>
+                        خیر، بذار بمونه
+                        <Icon name='remove' />
+                      </Button>
+                      <Button color='green' onClick={() => {
+                        setOpenDelete(false);
+                        RemoveTransaction(index)
+                      }}>
+                        بله، حذفش کن
+                        <Icon name='checkmark' />
+                      </Button>
+                    </Modal.Actions>
+                  </Modal>
                 </Table.Cell>
               </Table.Row>
             ))}
@@ -218,7 +281,7 @@ export default function Transactions() {
                   <Header.Content>
                     مجموع
                     <Header.Subheader>
-                      {sum} هزار تومان
+                      {EnglishDigitsToFarsi(sum)} هزار تومان
                     </Header.Subheader>
                   </Header.Content>
                 </Header>
