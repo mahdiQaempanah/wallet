@@ -2,7 +2,6 @@ import {
   BrowserRouter,
   Routes,
   Route,
-  useNavigate,
   Navigate,
 } from "react-router-dom";
 import LoginForm from "./pages/LoginForm";
@@ -11,6 +10,7 @@ import Transactions from "./pages/Transactions";
 import MainPage from "./pages/MainPage";
 import ReportPage from "./pages/ReportPage";
 import BudgetPage from "./pages/Budget";
+// import Education from "./pages/Education";
 
 export default function App(root) {
   return (
@@ -19,7 +19,9 @@ export default function App(root) {
         <Route path="/" element={<Navigate replace to="/login" />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/signup" element={<SignUp />} />
-          <Route path="transactions" element={<Transactions />} />        <Route path="/home/*" element={<MainPage />} />
+        <Route path="transactions" element={<Transactions />} />        
+        {/* <Route path="edu" element={<Education />} />         */}
+        <Route path="/home/*" element={<MainPage />} />
         <Route path="/report/*" element={<ReportPage />} />
         <Route path="/budget/*" element={<BudgetPage />} />
       </Routes>

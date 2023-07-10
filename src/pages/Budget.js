@@ -75,7 +75,7 @@ function BudgetPage() {
                 <Menu tabular compact>
                     {monthItems.map((item, index) => (
                         <Menu.Item
-                            color="purple"
+                            color='blue'
                             inverted
                             name={item.value}
                             key={index}
@@ -91,7 +91,7 @@ function BudgetPage() {
             <Container text style={{ marginTop: '2em' }} textAlign="right">
                 <Table 
                     textAlign="right"
-                    color="purple"
+                    color='blue'
                     singleLine 
                 >
                     <Table.Header>
