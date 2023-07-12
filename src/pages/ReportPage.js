@@ -22,6 +22,9 @@ import {
   BarChart,
   Bar,
   Legend,
+  PieChart,
+  Pie,
+  Cell,
 } from "recharts";
 
 let fullname = "ابوالفضل سلطانی";
@@ -40,6 +43,14 @@ let monthlyData = [
   { name: "اسفند", value: 100 },
 ];
 
+let percentageData = [
+  { expenseType: "غذا", value: 500, color: "#0E7C7B" },
+  { expenseType: "مسکن", value: 700, color: "#17BEBB" },
+  { expenseType: "حمل و نقل", value: 300, color: "#8AC4FF" },
+  { expenseType: "سرگرمی", value: 200, color: "#D62246" },
+  { expenseType: "درمان", value: 150, color: "#4B1D3F" },
+];
+
 let balanceData = [
   { name: "فروردین", موجودی: 1200 },
   { name: "اردیبهشت", موجودی: 2200 },
@@ -56,12 +67,16 @@ let balanceData = [
 ];
 
 let expenseTypeData = [
-  { expenseType: "غذا", مقدار: 500 },
-  { expenseType: "اجاره خانه", مقدار: 700 },
-  { expenseType: "حمل و نقل", مقدار: 300 },
-  { expenseType: "سرگرمی", مقدار: 200 },
+  { expenseType: "غذا", "نوع خرج": 500 },
+  { expenseType: "مسکن", "نوع خرج": 700 },
+  { expenseType: "حمل و نقل", "نوع خرج": 300 },
+  { expenseType: "سرگرمی", "نوع خرج": 200 },
+  { expenseType: "درمان", "نوع خرج": 150 },
 ];
 function ReportPage() {
+  let render = function (e) {
+    return e.expenseType;
+  };
   return (
     <>
       <Menu fixed="top" inverted>
@@ -130,17 +145,19 @@ function ReportPage() {
                   marginTop: "60px",
                 }}
               >
-                <BarChart width={600} height={340} data={expenseTypeData}>
+                <BarChart width={400} height={300} data={expenseTypeData}>
                   <XAxis dataKey="expenseType" />
-                  <YAxis />
+                  <YAxis>
+                    <Label value="میزان خرج" angle={-90} />
+                  </YAxis>
                   <Tooltip />
                   <Legend />
-                  <Bar dataKey="مقدار" fill="#8884d8" />
+                  <Bar dataKey="نوع خرج" fill="#8884d8" />
                 </BarChart>
               </div>
             </Grid.Column>
           </Grid.Row>
-          <Grid.Row style={{ height: "45%" }}>
+          <Grid.Row style={{ height: "41%" }}>
             <Grid.Column>
               <div
                 style={{
@@ -151,7 +168,7 @@ function ReportPage() {
                   marginTop: "20px",
                 }}
               >
-                <BarChart width={600} height={340} data={balanceData}>
+                <BarChart width={400} height={300} data={balanceData}>
                   <XAxis dataKey="name" />
                   <YAxis />
                   <Tooltip />
@@ -169,7 +186,23 @@ function ReportPage() {
                   height: "40vh",
                 }}
               >
-                <h1>4</h1>
+                <PieChart width={730} height={250}>
+                  <Pie
+                    data={percentageData}
+                    dataKey="value"
+                    nameKey="expenseType"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={100}
+                    fill="#0E7C7B"
+                    label={render}
+                    labelLine={false}
+                  >
+                    {percentageData.map((e, i) => (
+                      <Cell fill={e.color} />
+                    ))}
+                  </Pie>
+                </PieChart>
               </div>
             </Grid.Column>
           </Grid.Row>
