@@ -3,7 +3,7 @@ import EnglishDigitsToFarsi from './Utils';
 import { Navigate } from "react-router-dom";
 import { Dropdown, Menu, Container, Image, Header, Table, Button, Modal, Form, Input, Select, Icon, Segment } from 'semantic-ui-react'
 
-let fullname = "ابوالفضل سلطانی"
+let fullname = "ابوالفضل سلطانی";
 
 const randomData = [
   {
@@ -140,9 +140,14 @@ export default function Transactions() {
     <div>
       <Menu stackable fixed='top' inverted color='teal'>
         <Container>
-          <Menu.Item as='a' header>
+          <Menu.Item as="a" header>
             {fullname}
-            <Image circular size='mini' src='https://react.semantic-ui.com/images/avatar/large/steve.jpg' style={{ marginRight: '1.5em' }} />
+            <Image
+              circular
+              size="mini"
+              src="https://react.semantic-ui.com/images/avatar/large/steve.jpg"
+              style={{ marginRight: "1.5em" }}
+            />
           </Menu.Item>
           <Menu.Item as='a'>بودجه</Menu.Item>
           <Menu.Item active as='a'>تراکنش‌ها</Menu.Item>
@@ -168,7 +173,9 @@ export default function Transactions() {
         <Table color='yellow' fixed singleLine selectable textAlign='right'>
           <Table.Header>
             <Table.Row>
-              <Table.HeaderCell width={2} sorted='ascending'>تاریخ</Table.HeaderCell>
+              <Table.HeaderCell width={2} sorted="ascending">
+                تاریخ
+              </Table.HeaderCell>
               <Table.HeaderCell width={2}>پرداختگر</Table.HeaderCell>
               <Table.HeaderCell width={2}>دسته‌بندی</Table.HeaderCell>
               <Table.HeaderCell width={7}>توضیحات</Table.HeaderCell>
@@ -185,14 +192,20 @@ export default function Transactions() {
                 <Table.Cell>{transaction.category}</Table.Cell>
                 <Table.Cell>{transaction.description}</Table.Cell>
                 <Table.Cell>
-                  {
-                    (() => {
-                      if (transaction.amount > 0)
-                        return <span style={{ color: 'green' }}>{EnglishDigitsToFarsi(transaction.amount)} هزار تومان</span>
-                      else
-                        return <span style={{ color: 'red' }}>{EnglishDigitsToFarsi(transaction.amount)} هزار تومان</span>
-                    })()
-                  }
+                  {(() => {
+                    if (transaction.amount > 0)
+                      return (
+                        <span style={{ color: "green" }}>
+                          {EnglishDigitsToFarsi(transaction.amount)} هزار تومان
+                        </span>
+                      );
+                    else
+                      return (
+                        <span style={{ color: "red" }}>
+                          {EnglishDigitsToFarsi(transaction.amount)} هزار تومان
+                        </span>
+                      );
+                  })()}
                 </Table.Cell>
                 <Table.Cell collapsing>
                   <Modal
@@ -203,21 +216,21 @@ export default function Transactions() {
                     onOpen={() => setSelectedTransaction(transaction)}
                   >
                     <Modal.Content>
-                      <Segment vertical textAlign='right'>
+                      <Segment vertical textAlign="right">
                         آیا مطمئنید که می‌خواهید این تراکنش را حذف کنید؟
                       </Segment>
                     </Modal.Content>
                     <Modal.Actions>
                       <Button color='red' onClick={() => setSelectedTransaction(null)}>
                         خیر، بذار بمونه
-                        <Icon name='remove' />
+                        <Icon name="remove" />
                       </Button>
                       <Button color='green' onClick={() => {
                         RemoveTransaction(selectedTransaction)
                         setSelectedTransaction(null);
                       }}>
                         بله، حذفش کن
-                        <Icon name='checkmark' />
+                        <Icon name="checkmark" />
                       </Button>
                     </Modal.Actions>
                   </Modal>
@@ -228,24 +241,22 @@ export default function Transactions() {
 
           <Table.Footer fullWidth>
             <Table.Row>
-              <Table.HeaderCell colSpan='4'>
+              <Table.HeaderCell colSpan="4">
                 <Modal
                   onClose={() => setOpen(false)}
                   onOpen={() => setOpen(true)}
                   open={open}
                   trigger={<Button primary>تراکنش جدید</Button>}
-                  style={{ textAlign: 'right' }}
+                  style={{ textAlign: "right" }}
                 >
                   <Modal.Header>تراکنش جدید</Modal.Header>
                   <Modal.Content>
                     <Modal.Description>
-                      <Form
-                        id="add-transaction"
-                      >
-                        <Form.Group widths='equal'>
+                      <Form id="add-transaction">
+                        <Form.Group widths="equal">
                           <Form.Field
-                            id='date'
-                            label='تاریخ'
+                            id="date"
+                            label="تاریخ"
                             control={Input}
                             type='date'
                             placeholder='تاریخ'
@@ -257,9 +268,13 @@ export default function Transactions() {
                             control={Select}
                             label='پرداختگر'
                             options={[
-                              { key: 'mohammad', text: 'محمد', value: 'mohammad' },
-                              { key: 'ali', text: 'علی', value: 'ali' },
-                              { key: 'reza', text: 'رضا', value: 'reza' },
+                              {
+                                key: "mohammad",
+                                text: "محمد",
+                                value: "mohammad",
+                              },
+                              { key: "ali", text: "علی", value: "ali" },
+                              { key: "reza", text: "رضا", value: "reza" },
                             ]}
                             placeholder='پرداختگر'
                             onChange={(e, { value }) => addTransactionField('payee', value)}
@@ -275,8 +290,8 @@ export default function Transactions() {
                             error={errors['category']}
                           />
                           <Form.Field
-                            id='amount'
-                            label='مبلغ'
+                            id="amount"
+                            label="مبلغ"
                             control={Input}
                             type='number'
                             placeholder='مبلغ'
@@ -285,7 +300,7 @@ export default function Transactions() {
                           />
                         </Form.Group>
                         <Form.Field
-                          id='description'
+                          id="description"
                           control={Input}
                           label='توضیحات'
                           placeholder='توضیحات'
@@ -297,13 +312,13 @@ export default function Transactions() {
                   </Modal.Content>
 
                   <Modal.Actions>
-                    <Button color='black' onClick={() => setOpen(false)}>
+                    <Button color="black" onClick={() => setOpen(false)}>
                       انصراف
                     </Button>
                     <Button
                       content="ثبت"
-                      labelPosition='right'
-                      icon='checkmark'
+                      labelPosition="right"
+                      icon="checkmark"
                       onClick={() => {
                         if (ValidateTransaction(newTransaction) === false)
                           return
@@ -328,8 +343,7 @@ export default function Transactions() {
             </Table.Row>
           </Table.Footer>
         </Table>
-
       </Container>
     </div>
   );
-};
+}
