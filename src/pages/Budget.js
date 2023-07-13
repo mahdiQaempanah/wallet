@@ -91,33 +91,37 @@ function BudgetPage() {
         </Container>
       </Menu>
 
-      <Container style={{ marginTop: "7em" }} textAlign="center">
-        <Menu tabular compact>
-          {monthItems.map((item, index) => (
-            <Menu.Item
-              color="purple"
-              inverted
-              name={item.value}
-              key={index}
-              value={index}
-              active={item.active}
-              onClick={(e, data) => handleSelectMonth(e, data)}
-            >
-              {item.value}
-            </Menu.Item>
-          ))}
-        </Menu>
-      </Container>
-      <Container text style={{ marginTop: "2em" }} textAlign="right">
-        <Table textAlign="right" color="purple" singleLine>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell width={3} />
-              <Table.HeaderCell width={2}> بودجه </Table.HeaderCell>
-              <Table.HeaderCell width={2}> هزینه </Table.HeaderCell>
-              <Table.HeaderCell width={2}> میزان باقی‌مانده </Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
+            <Container style={{ marginTop: '7em' }} textAlign="center">
+                <Menu tabular compact>
+                    {monthItems.map((item, index) => (
+                        <Menu.Item
+                            color='blue'
+                            inverted
+                            name={item.value}
+                            key={index}
+                            value={index}
+                            active={item.active}
+                            onClick={(e, data) => handleSelectMonth(e, data)}
+                        >
+                            {item.value}
+                        </Menu.Item>)
+                    )}
+                </Menu>
+            </Container>
+            <Container text style={{ marginTop: '2em' }} textAlign="right">
+                <Table 
+                    textAlign="right"
+                    color='blue'
+                    singleLine 
+                >
+                    <Table.Header>
+                        <Table.Row>
+                            <Table.HeaderCell width={3}/>
+                            <Table.HeaderCell width={2}> بودجه </Table.HeaderCell>
+                            <Table.HeaderCell width={2}> هزینه </Table.HeaderCell>
+                            <Table.HeaderCell width={2}> میزان باقی‌مانده </Table.HeaderCell>
+                        </Table.Row>
+                    </Table.Header>
 
           <Table.Body>
             {budgetData.map((item, index) => (

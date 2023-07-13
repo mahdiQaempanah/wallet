@@ -5,5 +5,11 @@
 @headerFont        : 'Vazirmatn', 'Helvetica Neue', Arial, Helvetica, sans-serif;
 @pageFont          : 'Vazirmatn', 'Helvetica Neue', Arial, Helvetica, sans-serif;
 @googleFontFamily  : 'Vazirmatn';
-@primaryColor   : @purple;
-@secondaryColor : @grey;
+
+@primaryColor   : #489FB5;
+@secondaryColor : #FFA62B;
+@yellow         : #FFA62B;
+@olive          : #EDE7E3;
+@green          : #82C0CC;
+@teal           : #489FB5;
+@blue           : #16697A;

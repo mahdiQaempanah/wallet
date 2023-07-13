@@ -1,3 +1,9 @@
+export var palleteColor1 = '#16697A';
+export var palleteColor2 = '#489FB5';
+export var palleteColor3 = '#82C0CC';
+export var palleteColor4 = '#EDE7E3';
+export var palleteColor5 = '#FFA62B';
+
 export const EnglishDigitsToFarsi = function(num) {
     function convertor(num) {
       let str = num.toString();
