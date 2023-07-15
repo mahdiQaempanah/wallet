@@ -11,13 +11,64 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 
 function LoginForm() {
-  let username = "";
-  let password = "";
-  let navigator = useNavigate();
+  const navigator = useNavigate();
+  const [username, setUsername] = React.useState("");
+  const [password, setPassword] = React.useState("");
   const loginButton = () => {
-    // todo(connect to backend)
-    navigator("../home", { state: { username: username } });
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    console.log(username);
+    console.log(password);
+    var raw = JSON.stringify({
+      "username": username,
+      "password": password
+    });
+
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+
+    fetch("http://localhost:8000/api/login/", requestOptions)
+      .then(response => {
+        if (response.status < 200 || response.status >= 300)
+          throw new Error(response["message"]);
+        return response.text()
+      })
+      .then(result => {
+        console.log(result);
+        let token = JSON.parse(result)["token"];
+        localStorage.setItem("token", token);
+        getUserData(token);
+        navigator("/transactions");
+      })
+      .catch(error => console.log('error', error));
   };
+
+  function getUserData(token) {
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", `Token ${token}`);
+
+    var requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow'
+    };
+
+    fetch("http://localhost:8000/api/token/", requestOptions)
+      .then(response => response.text())
+      .then(result => {
+        let data = JSON.parse(result);
+        console.log(data);
+        localStorage.setItem("username", data["username"]);
+        localStorage.setItem("email", data["email"]);
+        localStorage.setItem("fullname", data["first_name"] + " " + data["last_name"]);
+      })
+      .catch(error => console.log('error', error));
+  }
+
   return (
     <>
       <Grid
@@ -38,7 +89,7 @@ function LoginForm() {
                 iconPosition="left"
                 placeholder="Username"
                 onChange={(text) => {
-                  username = text.target.value;
+                  setUsername(text.target.value);
                 }}
               />
               <Form.Input
@@ -48,7 +99,7 @@ function LoginForm() {
                 placeholder="Password"
                 type="password"
                 onChange={(text) => {
-                  password = text.target.value;
+                  setPassword(text.target.value);
                 }}
               />
 

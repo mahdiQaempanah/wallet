@@ -3,8 +3,6 @@ import EnglishDigitsToFarsi from './Utils';
 import { useNavigate } from "react-router-dom";
 import { Menu, Container, Image, Header, Table, Button, Modal, Form, Input, Select, Icon, Segment } from 'semantic-ui-react'
 
-let fullname = "ابوالفضل سلطانی";
-
 const categoryOptions = [
   { key: 'food', text: 'غذا', value: 'غذا' },
   { key: 'housing', text: 'مسکن', value: 'مسکن' },
@@ -18,6 +16,8 @@ const categoryOptions = [
 
 
 export default function Transactions() {
+  const token = localStorage.getItem("token")
+  const fullname = localStorage.getItem("fullname")
   const navigator = useNavigate()
   const [open, setOpen] = React.useState(false)
   const [data, setData] = React.useState([])
@@ -56,7 +56,7 @@ export default function Transactions() {
 
   async function fetchData() {
     var myHeaders = new Headers();
-    myHeaders.append("Authorization", "Token 0ec42906b8628c506c6c3e0060180ca6e3a74fd0");
+    myHeaders.append("Authorization", `Token ${token}`);
 
     var requestOptions = {
       method: 'GET',
@@ -118,7 +118,7 @@ export default function Transactions() {
     async function AddTransaction(transaction) {
 
       var myHeaders = new Headers();
-      myHeaders.append("Authorization", "Token 0ec42906b8628c506c6c3e0060180ca6e3a74fd0");
+      myHeaders.append("Authorization", `Token ${token}`);
       myHeaders.append("Content-Type", "application/json");
 
       var raw = JSON.stringify({
@@ -167,7 +167,8 @@ export default function Transactions() {
             <Menu.Item as='a' onClick={() => {navigator("/settings")}}>تنظیمات</Menu.Item>
             <Menu.Item position='left' as='a' onClick={() => {
               localStorage.removeItem("token");
-              window.location.reload();
+              // window.location.reload();
+              navigator("/login")
             }}>خروج</Menu.Item>
           </Container>
         </Menu>
