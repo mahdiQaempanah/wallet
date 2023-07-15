@@ -5,9 +5,9 @@ import { useNavigate } from "react-router-dom";
 import food from '../assets/images/food.jpeg'
 import src from '../assets/images/edu.jpeg'
 
-let fullname = "ابوالفضل سلطانی";
-
 function BudgetPage() {
+  const token = localStorage.getItem("token");
+  const fullname = localStorage.getItem("fullname");
   const navigator = useNavigate();
   const monthList = [
     "فروردین",
@@ -34,7 +34,7 @@ function BudgetPage() {
 
   function fetchBudget() {
     var myHeaders = new Headers();
-    myHeaders.append("Authorization", "Token 0ec42906b8628c506c6c3e0060180ca6e3a74fd0");
+    myHeaders.append("Authorization", `Token ${token}`);
 
     var requestOptions = {
       method: 'GET',
@@ -78,6 +78,7 @@ function BudgetPage() {
           <Menu.Item position='left' as='a' onClick={() => {
             localStorage.removeItem("token");
             window.location.reload();
+            navigator("/login")
           }}>خروج</Menu.Item>
         </Container>
       </Menu>
