@@ -26,6 +26,7 @@ import {
   Pie,
   Cell,
 } from "recharts";
+import { useNavigate } from "react-router-dom";
 
 let fullname = "ابوالفضل سلطانی";
 let monthlyData = [
@@ -74,12 +75,13 @@ let expenseTypeData = [
   { expenseType: "درمان", "نوع خرج": 150 },
 ];
 function ReportPage() {
+  const navigator = useNavigate();
   let render = function (e) {
     return e.expenseType;
   };
   return (
     <>
-      <Menu fixed="top" inverted>
+      <Menu stackable fixed='top' inverted color='teal'>
         <Container>
           <Menu.Item as="a" header>
             {fullname}
@@ -90,25 +92,14 @@ function ReportPage() {
               style={{ marginRight: "1.5em" }}
             />
           </Menu.Item>
-          <Menu.Item as="a">Home</Menu.Item>
-
-          <Dropdown item simple text="Dropdown">
-            <Dropdown.Menu>
-              <Dropdown.Item>List Item</Dropdown.Item>
-              <Dropdown.Item>List Item</Dropdown.Item>
-              <Dropdown.Divider />
-              <Dropdown.Header>Header Item</Dropdown.Header>
-              <Dropdown.Item>
-                <i className="dropdown icon" />
-                <span className="text">Submenu</span>
-                <Dropdown.Menu>
-                  <Dropdown.Item>List Item</Dropdown.Item>
-                  <Dropdown.Item>List Item</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown.Item>
-              <Dropdown.Item>List Item</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
+          <Menu.Item as='a' onClick={() => { navigator("/budget") }}>بودجه</Menu.Item>
+          <Menu.Item as='a' onClick={() => { navigator("/transactions") }}>تراکنش‌ها</Menu.Item>
+          <Menu.Item active as='a' onClick={() => { navigator("/report") }}>گزارش‌ها</Menu.Item>
+          <Menu.Item as='a' onClick={() => { navigator("/settings") }}>تنظیمات</Menu.Item>
+          <Menu.Item position='left' as='a' onClick={() => {
+            localStorage.removeItem("token");
+            window.location.reload();
+          }}>خروج</Menu.Item>
         </Container>
       </Menu>
 

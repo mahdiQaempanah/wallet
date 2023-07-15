@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import EnglishDigitsToFarsi from './Utils';
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Menu, Container, Image, Header, Table, Button, Modal, Form, Input, Select, Icon, Segment } from 'semantic-ui-react'
 
 let fullname = "ابوالفضل سلطانی";
@@ -16,7 +16,9 @@ const categoryOptions = [
   { key: 'other', text: 'سایر', value: 'سایر' },
 ]
 
+
 export default function Transactions() {
+  const navigator = useNavigate()
   const [open, setOpen] = React.useState(false)
   const [data, setData] = React.useState([])
   const [sum, setSum] = React.useState(0)
@@ -159,10 +161,10 @@ export default function Transactions() {
                 style={{ marginRight: "1.5em" }}
               />
             </Menu.Item>
-            <Menu.Item as='a'>بودجه</Menu.Item>
-            <Menu.Item active as='a'>تراکنش‌ها</Menu.Item>
-            <Menu.Item as='a'>گزارش‌ها</Menu.Item>
-            <Menu.Item as='a'>تنظیمات</Menu.Item>
+            <Menu.Item as='a' onClick={() => {navigator("/budget")}}>بودجه</Menu.Item>
+            <Menu.Item active as='a' onClick={() => {navigator("/transactions")}}>تراکنش‌ها</Menu.Item>
+            <Menu.Item as='a' onClick={() => {navigator("/report")}}>گزارش‌ها</Menu.Item>
+            <Menu.Item as='a' onClick={() => {navigator("/settings")}}>تنظیمات</Menu.Item>
             <Menu.Item position='left' as='a' onClick={() => {
               localStorage.removeItem("token");
               window.location.reload();
