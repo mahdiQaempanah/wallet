@@ -3,22 +3,11 @@ import EnglishDigitsToFarsi from './Utils';
 import { useNavigate } from "react-router-dom";
 import { Menu, Container, Image, Header, Table, Button, Modal, Form, Input, Select, Icon, Segment } from 'semantic-ui-react'
 
-const categoryOptions = [
-  { key: 'food', text: 'غذا', value: 'غذا' },
-  { key: 'housing', text: 'مسکن', value: 'مسکن' },
-  { key: 'transportation', text: 'حمل‌ونقل', value: 'حمل‌و‌نقل' },
-  { key: 'education', text: 'آموزش', value: 'آموزش' },
-  { key: 'entertainment', text: 'سرگرمی', value: 'سرگرمی' },
-  { key: 'health', text: 'سلامت', value: 'سلامت' },
-  { key: 'clothing', text: 'پوشاک', value: 'پوشاک' },
-  { key: 'other', text: 'سایر', value: 'سایر' },
-]
-
-
 export default function Transactions() {
   const token = localStorage.getItem("token")
   const fullname = localStorage.getItem("fullname")
   const navigator = useNavigate()
+  const [categories, setCategories] = React.useState([])
   const [open, setOpen] = React.useState(false)
   const [data, setData] = React.useState([])
   const [sum, setSum] = React.useState(0)
@@ -40,7 +29,7 @@ export default function Transactions() {
 
   useEffect(() => {
     fetchData()
-  }, [])
+  }, [data])
 
   useEffect(() => {
     let sum = 0
@@ -53,6 +42,35 @@ export default function Transactions() {
   // if (localStorage.getItem("token") === null) {
   //   return <Navigate to="/login" />;
   // }
+
+  useEffect(() => {
+    if (categories.length !== 0)
+      return categories
+
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", `Token ${token}`);
+
+    var requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow'
+    };
+
+    fetch("http://localhost:8000/api/categories/", requestOptions)
+      .then(response => response.json())
+      .then(result => {
+        const categories = []
+        for (let i = 0; i < result.length; i++) {
+          categories.push({
+            key: result[i].name,
+            text: result[i].name,
+            value: result[i].name
+          })
+        }
+        setCategories(categories)
+      })
+      .catch(error => console.log('error', error));
+  }, [])
 
   async function fetchData() {
     var myHeaders = new Headers();
@@ -67,7 +85,6 @@ export default function Transactions() {
     try {
       const response = await fetch("http://localhost:8000/api/records/", requestOptions)
       const result = await response.json()
-      console.log(result)
       setData(result)
     }
     catch (error) {
@@ -203,7 +220,7 @@ export default function Transactions() {
               <Table.HeaderCell width={2} sorted="ascending">
                 تاریخ
               </Table.HeaderCell>
-              <Table.HeaderCell width={2}>پرداختگر</Table.HeaderCell>
+              <Table.HeaderCell width={2}>دریافت‌کننده</Table.HeaderCell>
               <Table.HeaderCell width={2}>دسته‌بندی</Table.HeaderCell>
               <Table.HeaderCell width={7}>توضیحات</Table.HeaderCell>
               <Table.HeaderCell width={2}>مبلغ</Table.HeaderCell>
@@ -214,7 +231,9 @@ export default function Transactions() {
           <Table.Body>
             {data.map((transaction, index) => (
               <Table.Row key={transaction.id}>
-                <Table.Cell>{transaction.date}</Table.Cell>
+                <Table.Cell>
+                  {new Date(transaction.date).toLocaleDateString('en-US', {
+month: '2-digit',day: '2-digit',year: 'numeric'})}</Table.Cell>
                 <Table.Cell>{transaction.payee}</Table.Cell>
                 <Table.Cell>{transaction.category}</Table.Cell>
                 <Table.Cell>{transaction.description}</Table.Cell>
@@ -292,25 +311,16 @@ export default function Transactions() {
                           />
                           <Form.Field
                             id='payee'
-                            control={Select}
-                            label='پرداختگر'
-                            options={[
-                              {
-                                key: "mohammad",
-                                text: "محمد",
-                                value: "mohammad",
-                              },
-                              { key: "ali", text: "علی", value: "ali" },
-                              { key: "reza", text: "رضا", value: "reza" },
-                            ]}
-                            placeholder='پرداختگر'
+                            control={Input}
+                            label='دریافت‌کننده'
+                            placeholder='دریافت‌کننده'
                             onChange={(e, { value }) => addTransactionField('payee', value)}
                             error={errors['payee']}
                           />
                           <Form.Field
                             id='category'
                             control={Select}
-                            options={categoryOptions}
+                            options={categories}
                             label='دسته‌بندی'
                             placeholder='دسته‌بندی'
                             onChange={(e, { value }) => addTransactionField('category', value)}

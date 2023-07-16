@@ -130,7 +130,7 @@ function ReportPage() {
             as="a"
             onClick={() => {
               localStorage.removeItem("token");
-              window.location.reload();
+              navigator("/login");
             }}
           >
             خروج

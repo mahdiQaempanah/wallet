@@ -1,5 +1,5 @@
 import { React, useEffect, useState, useMemo } from "react";
-import { Card, Menu, Table, Container, Image } from "semantic-ui-react";
+import { Icon, Menu, Table, Container, Image } from "semantic-ui-react";
 import EnglishDigitsToFarsi from "./Utils";
 import { useNavigate } from "react-router-dom";
 import food from '../assets/images/food.jpeg'
@@ -10,18 +10,18 @@ function BudgetPage() {
   const fullname = localStorage.getItem("fullname");
   const navigator = useNavigate();
   const monthList = [
-    "فروردین",
-    "اردیبهشت",
-    "خرداد",
-    "تیر",
-    "مرداد",
-    "شهریور",
-    "مهر",
-    "آبان",
-    "آذر",
-    "دی",
-    "بهمن",
-    "اسفند",
+    "January",
+    "Februray",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "Auguest",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
 
   const [activeMonth, setActiveMonth] = useState(1);
@@ -77,7 +77,6 @@ function BudgetPage() {
           <Menu.Item as='a' onClick={() => { navigator("/settings") }}>تنظیمات</Menu.Item>
           <Menu.Item position='left' as='a' onClick={() => {
             localStorage.removeItem("token");
-            window.location.reload();
             navigator("/login")
           }}>خروج</Menu.Item>
         </Container>
@@ -103,7 +102,7 @@ function BudgetPage() {
         </Menu>
       </Container>
 
-      <Container style={{ marginTop: '3em' }}>
+      {/* <Container style={{ marginTop: '3em' }}>
         <Card.Group itemsPerRow={4}>
           {budgetData.map((item, index) => (
             <Card key={index}>
@@ -123,14 +122,14 @@ function BudgetPage() {
             </Card>
           ))}
         </Card.Group>
-      </Container>
+      </Container> */}
 
 
       <Container text style={{ marginTop: '2em' }} textAlign="right">
         <Table
           textAlign="right"
-          color='blue'
-          singleLine
+          color='yellow'
+          celled
         >
           <Table.Header>
             <Table.Row>
@@ -144,15 +143,61 @@ function BudgetPage() {
           <Table.Body>
             {budgetData.map((item, index) => (
               <Table.Row key={index}>
-                <Table.Cell>{item.categryName}</Table.Cell>
-                <Table.Cell>{EnglishDigitsToFarsi(item.budget)}</Table.Cell>
-                <Table.Cell>{EnglishDigitsToFarsi(item.spent)} </Table.Cell>
+                <Table.Cell>{item.category}</Table.Cell>
+                <Table.Cell>{EnglishDigitsToFarsi(item.budget)} هزار تومان</Table.Cell>
+                <Table.Cell>{EnglishDigitsToFarsi(item.spent)} هزار تومان</Table.Cell>
                 <Table.Cell>
-                  {EnglishDigitsToFarsi(calculateBalance(item))}
+                  {(() => {
+                    let balance = calculateBalance(item);
+                    if (balance >= 0)
+                      return (
+                        <span>
+                          {EnglishDigitsToFarsi(balance)} هزار تومان
+                        </span>
+                      );
+                    else
+                      return (
+                        <span style={{ color: "red" }}>
+                          {EnglishDigitsToFarsi(balance)} هزار تومان
+                        </span>
+                      );
+                  })()}
                 </Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>
+
+          <Table.Footer fullWidth>
+            <Table.Row>
+              <Table.HeaderCell>
+                مجموع
+              </Table.HeaderCell>
+              <Table.HeaderCell>
+                {EnglishDigitsToFarsi(budgetData.reduce((a, b) => a + b.budget, 0))} هزار تومان
+              </Table.HeaderCell>
+              <Table.HeaderCell>
+                {EnglishDigitsToFarsi(budgetData.reduce((a, b) => a + b.spent, 0))} هزار تومان
+              </Table.HeaderCell>
+              <Table.HeaderCell>
+                {(() => {
+                  let balance = budgetData.reduce((a, b) => a + calculateBalance(b), 0);
+                  if (balance >= 0)
+                    return (
+                      <span>
+                        {EnglishDigitsToFarsi(balance)} هزار تومان
+                      </span>
+                    );
+                  else
+                    return (
+                      <span style={{ color: "red" }}>
+                        {EnglishDigitsToFarsi(balance)} هزار تومان
+                      </span>
+                    );
+                })()}
+              </Table.HeaderCell>
+            </Table.Row>
+          </Table.Footer>
+
         </Table>
       </Container>
     </div>
