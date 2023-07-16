@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Button,
   Form,
@@ -14,6 +14,8 @@ function LoginForm() {
   const navigator = useNavigate();
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [hasError, setHasError] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState("");
   const loginButton = () => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -33,8 +35,11 @@ function LoginForm() {
 
     fetch("http://localhost:8000/api/login/", requestOptions)
       .then(response => {
-        if (response.status < 200 || response.status >= 300)
+        if (response.status < 200 || response.status >= 300) {
+          setHasError(true);
+          setErrorMessage("نام کاربری یا رمز عبور اشتباه است");
           throw new Error(response["message"]);
+        }
         return response.text()
       })
       .then(result => {
@@ -42,10 +47,15 @@ function LoginForm() {
         let token = JSON.parse(result)["token"];
         localStorage.setItem("token", token);
         getUserData(token);
-        navigator("/transactions");
       })
       .catch(error => console.log('error', error));
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("token") !== null) {
+      navigator("/transactions");
+    }
+  }, []);
 
   function getUserData(token) {
     var myHeaders = new Headers();
@@ -81,7 +91,7 @@ function LoginForm() {
             <Image src="/logo.png" />
             <span>وارد شوید</span>
           </Header>
-          <Form size="large">
+          <Form size="large" error={hasError}>
             <Segment stacked>
               <Form.Input
                 fluid
@@ -107,6 +117,11 @@ function LoginForm() {
                 <span>ورود</span>
               </Button>
             </Segment>
+            <Message
+              error
+              header="خطا"
+              content={errorMessage}
+            />
           </Form>
           <Message>
             <span>حساب کاربری ندارید؟</span>
