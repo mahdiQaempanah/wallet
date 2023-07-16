@@ -29,20 +29,6 @@ import {
 import { useNavigate } from "react-router-dom";
 
 let fullname = "ابوالفضل سلطانی";
-let monthlyData = [
-  { name: "فروردین", value: 100 },
-  { name: "اردیبهشت", value: 200 },
-  { name: "خرداد", value: 150 },
-  { name: "تیر", value: 50 },
-  { name: "مرداد", value: 250 },
-  { name: "شهریور", value: 120 },
-  { name: "مهر", value: 100 },
-  { name: "ابان", value: 200 },
-  { name: "اذر", value: 50 },
-  { name: "دی", value: 250 },
-  { name: "بهمن", value: 120 },
-  { name: "اسفند", value: 100 },
-];
 
 let percentageData = [
   { expenseType: "غذا", value: 500, color: "#0E7C7B" },
@@ -52,21 +38,6 @@ let percentageData = [
   { expenseType: "درمان", value: 150, color: "#4B1D3F" },
 ];
 
-let balanceData = [
-  { name: "فروردین", ماه: 1200 },
-  { name: "اردیبهشت", ماه: 2200 },
-  { name: "خرداد", ماه: 1150 },
-  { name: "تیر", ماه: 550 },
-  { name: "مرداد", ماه: 5250 },
-  { name: "شهریور", ماه: 5120 },
-  { name: "مهر", ماه: 3100 },
-  { name: "ابان", ماه: 2200 },
-  { name: "اذر", ماه: 1050 },
-  { name: "دی", ماه: 250 },
-  { name: "بهمن", ماه: 120 },
-  { name: "اسفند", ماه: 0 },
-];
-
 let expenseTypeData = [
   { expenseType: "غذا", "نوع خرج": 500 },
   { expenseType: "مسکن", "نوع خرج": 700 },
@@ -74,11 +45,81 @@ let expenseTypeData = [
   { expenseType: "سرگرمی", "نوع خرج": 200 },
   { expenseType: "درمان", "نوع خرج": 150 },
 ];
+
 function ReportPage() {
   const navigator = useNavigate();
-  let render = function (e) {
-    return e.expenseType;
+  const username = localStorage.getItem("username");
+  const token = localStorage.getItem("token");
+
+  const [monthlyData, setMonthlyData] = useState([]);
+  const [balanceData, setBalanceData] = useState([]);
+
+  var myHeaders = new Headers();
+  myHeaders.append("Authorization", `Token ${token}`);
+
+  var requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow",
   };
+  var url = "http://localhost:8000/api/report/expend/2023";
+
+  fetch(url, requestOptions)
+    .then((response) => {
+      return response.text();
+    })
+    .then((result) => {
+      let monthlyDataTemp = [
+        { name: "January", value: 100 },
+        { name: "Februray", value: 200 },
+        { name: "March", value: 150 },
+        { name: "April", value: 50 },
+        { name: "May", value: 250 },
+        { name: "June", value: 120 },
+        { name: "July", value: 100 },
+        { name: "Auguest", value: 200 },
+        { name: "September", value: 50 },
+        { name: "October", value: 250 },
+        { name: "November", value: 120 },
+        { name: "December", value: 100 },
+      ];
+      var data = JSON.parse(result);
+      for (var key in data) {
+        monthlyDataTemp[key - 1]["value"] = parseInt(-data[key]);
+      }
+      setMonthlyData(monthlyDataTemp);
+    })
+    .catch((error) => console.log("error", error));
+
+  var url = "http://localhost:8000/api/report/inventory/2023";
+
+  fetch(url, requestOptions)
+    .then((response) => {
+      return response.text();
+    })
+    .then((result) => {
+      let balanceDataTemp = [
+        { name: "January", value: 100 },
+        { name: "Februray", value: 200 },
+        { name: "March", value: 150 },
+        { name: "April", value: 50 },
+        { name: "May", value: 250 },
+        { name: "June", value: 120 },
+        { name: "July", value: 100 },
+        { name: "Auguest", value: 200 },
+        { name: "September", value: 50 },
+        { name: "October", value: 250 },
+        { name: "November", value: 120 },
+        { name: "December", value: 100 },
+      ];
+      var data = JSON.parse(result);
+      for (var key in data) {
+        balanceDataTemp[key - 1]["value"] = parseInt(data[key]);
+      }
+      setBalanceData(balanceDataTemp);
+    })
+    .catch((error) => console.log("error", error));
+
   return (
     <>
       <Menu stackable fixed="top" inverted color="teal">
@@ -151,10 +192,10 @@ function ReportPage() {
                   marginTop: "60px",
                 }}
               >
-                <LineChart width={650} height={290} data={monthlyData}>
+                <LineChart width={650} height={290} data={balanceData}>
                   <XAxis dataKey="name" />
                   <YAxis>
-                    <Label value="میزان خرج" angle={-90} />
+                    <Label value="value" angle={-90} />
                   </YAxis>
                   <Tooltip />
                   <Line type="monotone" dataKey="value" stroke="#8884d8" />
@@ -194,14 +235,14 @@ function ReportPage() {
                   marginTop: "20px",
                 }}
               >
-                <BarChart width={650} height={290} data={balanceData}>
+                <BarChart width={650} height={290} data={monthlyData}>
                   <XAxis dataKey="name" />
                   <YAxis>
                     <Label value="خرج" angle={-90} />
                   </YAxis>
                   <Tooltip />
                   <Legend />
-                  <Bar dataKey="ماه" fill="#8884d8" />
+                  <Bar dataKey="value" fill="#8884d8" />
                 </BarChart>
               </div>
             </Grid.Column>
