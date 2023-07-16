@@ -53,18 +53,18 @@ let percentageData = [
 ];
 
 let balanceData = [
-  { name: "فروردین", موجودی: 1200 },
-  { name: "اردیبهشت", موجودی: 2200 },
-  { name: "خرداد", موجودی: 1150 },
-  { name: "تیر", موجودی: 550 },
-  { name: "مرداد", موجودی: 5250 },
-  { name: "شهریور", موجودی: 5120 },
-  { name: "مهر", موجودی: 3100 },
-  { name: "ابان", موجودی: 2200 },
-  { name: "اذر", موجودی: 1050 },
-  { name: "دی", موجودی: 250 },
-  { name: "بهمن", موجودی: 120 },
-  { name: "اسفند", موجودی: 0 },
+  { name: "فروردین", ماه: 1200 },
+  { name: "اردیبهشت", ماه: 2200 },
+  { name: "خرداد", ماه: 1150 },
+  { name: "تیر", ماه: 550 },
+  { name: "مرداد", ماه: 5250 },
+  { name: "شهریور", ماه: 5120 },
+  { name: "مهر", ماه: 3100 },
+  { name: "ابان", ماه: 2200 },
+  { name: "اذر", ماه: 1050 },
+  { name: "دی", ماه: 250 },
+  { name: "بهمن", ماه: 120 },
+  { name: "اسفند", ماه: 0 },
 ];
 
 let expenseTypeData = [
@@ -81,7 +81,7 @@ function ReportPage() {
   };
   return (
     <>
-      <Menu stackable fixed='top' inverted color='teal'>
+      <Menu stackable fixed="top" inverted color="teal">
         <Container>
           <Menu.Item as="a" header>
             {fullname}
@@ -92,14 +92,49 @@ function ReportPage() {
               style={{ marginRight: "1.5em" }}
             />
           </Menu.Item>
-          <Menu.Item as='a' onClick={() => { navigator("/budget") }}>بودجه</Menu.Item>
-          <Menu.Item as='a' onClick={() => { navigator("/transactions") }}>تراکنش‌ها</Menu.Item>
-          <Menu.Item active as='a' onClick={() => { navigator("/report") }}>گزارش‌ها</Menu.Item>
-          <Menu.Item as='a' onClick={() => { navigator("/settings") }}>تنظیمات</Menu.Item>
-          <Menu.Item position='left' as='a' onClick={() => {
-            localStorage.removeItem("token");
-            window.location.reload();
-          }}>خروج</Menu.Item>
+          <Menu.Item
+            as="a"
+            onClick={() => {
+              navigator("/budget");
+            }}
+          >
+            بودجه
+          </Menu.Item>
+          <Menu.Item
+            as="a"
+            onClick={() => {
+              navigator("/transactions");
+            }}
+          >
+            تراکنش‌ها
+          </Menu.Item>
+          <Menu.Item
+            active
+            as="a"
+            onClick={() => {
+              navigator("/report");
+            }}
+          >
+            گزارش‌ها
+          </Menu.Item>
+          <Menu.Item
+            as="a"
+            onClick={() => {
+              navigator("/settings");
+            }}
+          >
+            تنظیمات
+          </Menu.Item>
+          <Menu.Item
+            position="left"
+            as="a"
+            onClick={() => {
+              localStorage.removeItem("token");
+              window.location.reload();
+            }}
+          >
+            خروج
+          </Menu.Item>
         </Container>
       </Menu>
 
@@ -116,7 +151,7 @@ function ReportPage() {
                   marginTop: "60px",
                 }}
               >
-                <LineChart width={400} height={300} data={monthlyData}>
+                <LineChart width={650} height={290} data={monthlyData}>
                   <XAxis dataKey="name" />
                   <YAxis>
                     <Label value="میزان خرج" angle={-90} />
@@ -136,7 +171,7 @@ function ReportPage() {
                   marginTop: "60px",
                 }}
               >
-                <BarChart width={400} height={300} data={expenseTypeData}>
+                <BarChart width={600} height={290} data={expenseTypeData}>
                   <XAxis dataKey="expenseType" />
                   <YAxis>
                     <Label value="میزان خرج" angle={-90} />
@@ -159,12 +194,14 @@ function ReportPage() {
                   marginTop: "20px",
                 }}
               >
-                <BarChart width={400} height={300} data={balanceData}>
+                <BarChart width={650} height={290} data={balanceData}>
                   <XAxis dataKey="name" />
-                  <YAxis />
+                  <YAxis>
+                    <Label value="خرج" angle={-90} />
+                  </YAxis>
                   <Tooltip />
                   <Legend />
-                  <Bar dataKey="موجودی" fill="#8884d8" />
+                  <Bar dataKey="ماه" fill="#8884d8" />
                 </BarChart>
               </div>
             </Grid.Column>
@@ -177,7 +214,7 @@ function ReportPage() {
                   height: "40vh",
                 }}
               >
-                <PieChart width={730} height={250}>
+                <PieChart width={730} height={240}>
                   <Pie
                     data={percentageData}
                     dataKey="value"
@@ -186,13 +223,14 @@ function ReportPage() {
                     cy="50%"
                     outerRadius={100}
                     fill="#0E7C7B"
-                    label={render}
                     labelLine={false}
                   >
                     {percentageData.map((e, i) => (
                       <Cell fill={e.color} />
                     ))}
                   </Pie>
+                  <Tooltip />
+                  <Legend />
                 </PieChart>
               </div>
             </Grid.Column>
