@@ -74,7 +74,6 @@ function BudgetPage() {
           <Menu.Item active as='a' onClick={() => { navigator("/budget") }}>بودجه</Menu.Item>
           <Menu.Item as='a' onClick={() => { navigator("/transactions") }}>تراکنش‌ها</Menu.Item>
           <Menu.Item as='a' onClick={() => { navigator("/report") }}>گزارش‌ها</Menu.Item>
-          <Menu.Item as='a' onClick={() => { navigator("/settings") }}>تنظیمات</Menu.Item>
           <Menu.Item position='left' as='a' onClick={() => {
             localStorage.removeItem("token");
             navigator("/login")

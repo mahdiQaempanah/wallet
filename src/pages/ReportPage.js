@@ -28,8 +28,6 @@ import {
 } from "recharts";
 import { useNavigate } from "react-router-dom";
 
-let fullname = "ابوالفضل سلطانی";
-
 let percentageData = [
   { expenseType: "غذا", value: 500, color: "#0E7C7B" },
   { expenseType: "مسکن", value: 700, color: "#17BEBB" },
@@ -50,7 +48,7 @@ function ReportPage() {
   const navigator = useNavigate();
   const username = localStorage.getItem("username");
   const token = localStorage.getItem("token");
-
+  const fullname = localStorage.getItem("fullname");
   const [monthlyData, setMonthlyData] = useState([]);
   const [balanceData, setBalanceData] = useState([]);
 
@@ -64,61 +62,65 @@ function ReportPage() {
   };
   var url = "http://localhost:8000/api/report/expend/2023";
 
-  fetch(url, requestOptions)
-    .then((response) => {
-      return response.text();
-    })
-    .then((result) => {
-      let monthlyDataTemp = [
-        { name: "January", value: 100 },
-        { name: "Februray", value: 200 },
-        { name: "March", value: 150 },
-        { name: "April", value: 50 },
-        { name: "May", value: 250 },
-        { name: "June", value: 120 },
-        { name: "July", value: 100 },
-        { name: "Auguest", value: 200 },
-        { name: "September", value: 50 },
-        { name: "October", value: 250 },
-        { name: "November", value: 120 },
-        { name: "December", value: 100 },
-      ];
-      var data = JSON.parse(result);
-      for (var key in data) {
-        monthlyDataTemp[key - 1]["value"] = parseInt(-data[key]);
-      }
-      setMonthlyData(monthlyDataTemp);
-    })
-    .catch((error) => console.log("error", error));
+  useEffect(() => {
+    fetch(url, requestOptions)
+      .then((response) => {
+        return response.text();
+      })
+      .then((result) => {
+        let monthlyDataTemp = [
+          { name: "January", value: 100 },
+          { name: "Februray", value: 200 },
+          { name: "March", value: 150 },
+          { name: "April", value: 50 },
+          { name: "May", value: 250 },
+          { name: "June", value: 120 },
+          { name: "July", value: 100 },
+          { name: "Auguest", value: 200 },
+          { name: "September", value: 50 },
+          { name: "October", value: 250 },
+          { name: "November", value: 120 },
+          { name: "December", value: 100 },
+        ];
+        var data = JSON.parse(result);
+        for (var key in data) {
+          monthlyDataTemp[key - 1]["value"] = parseInt(-data[key]);
+        }
+        setMonthlyData(monthlyDataTemp);
+      })
+      .catch((error) => console.log("error", error));
+  }, []);
 
-  var url = "http://localhost:8000/api/report/inventory/2023";
+  useEffect(() => {
+    var url = "http://localhost:8000/api/report/inventory/2023";
 
-  fetch(url, requestOptions)
-    .then((response) => {
-      return response.text();
-    })
-    .then((result) => {
-      let balanceDataTemp = [
-        { name: "January", value: 100 },
-        { name: "Februray", value: 200 },
-        { name: "March", value: 150 },
-        { name: "April", value: 50 },
-        { name: "May", value: 250 },
-        { name: "June", value: 120 },
-        { name: "July", value: 100 },
-        { name: "Auguest", value: 200 },
-        { name: "September", value: 50 },
-        { name: "October", value: 250 },
-        { name: "November", value: 120 },
-        { name: "December", value: 100 },
-      ];
-      var data = JSON.parse(result);
-      for (var key in data) {
-        balanceDataTemp[key - 1]["value"] = parseInt(data[key]);
-      }
-      setBalanceData(balanceDataTemp);
-    })
-    .catch((error) => console.log("error", error));
+    fetch(url, requestOptions)
+      .then((response) => {
+        return response.text();
+      })
+      .then((result) => {
+        let balanceDataTemp = [
+          { name: "January", value: 100 },
+          { name: "Februray", value: 200 },
+          { name: "March", value: 150 },
+          { name: "April", value: 50 },
+          { name: "May", value: 250 },
+          { name: "June", value: 120 },
+          { name: "July", value: 100 },
+          { name: "Auguest", value: 200 },
+          { name: "September", value: 50 },
+          { name: "October", value: 250 },
+          { name: "November", value: 120 },
+          { name: "December", value: 100 },
+        ];
+        var data = JSON.parse(result);
+        for (var key in data) {
+          balanceDataTemp[key - 1]["value"] = parseInt(data[key]);
+        }
+        setBalanceData(balanceDataTemp);
+      })
+      .catch((error) => console.log("error", error));
+  }, []);
 
   return (
     <>
@@ -157,14 +159,6 @@ function ReportPage() {
             }}
           >
             گزارش‌ها
-          </Menu.Item>
-          <Menu.Item
-            as="a"
-            onClick={() => {
-              navigator("/settings");
-            }}
-          >
-            تنظیمات
           </Menu.Item>
           <Menu.Item
             position="left"

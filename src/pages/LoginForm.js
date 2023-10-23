@@ -47,15 +47,10 @@ function LoginForm() {
         let token = JSON.parse(result)["token"];
         localStorage.setItem("token", token);
         getUserData(token);
+        navigator("/transactions");
       })
       .catch(error => console.log('error', error));
   };
-
-  useEffect(() => {
-    if (localStorage.getItem("token") !== null) {
-      navigator("/transactions");
-    }
-  }, []);
 
   function getUserData(token) {
     var myHeaders = new Headers();
